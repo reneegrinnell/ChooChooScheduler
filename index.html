@@ -25,6 +25,7 @@
         <!-- Jumbotron -->
         <div class="jumbotron">
             <h1 class="text-center">Choo-Choo Scheduler</h1>
+            <h4 class="text-center">I Think I Can, I Think I Can...</h4>
         </div>
 
         <div class="row">
@@ -41,22 +42,22 @@
                         <!-- Train data entry form-->
                         <form role="form">
                             <div class="form-group row">
-                                <label for="name-input">Name:</label>
-                                <input class="form-control" id="name-input" type="text">
+                                <label for="trainName-input">Train Name:</label>
+                                <input class="form-control" id="trainName-input" type="text">
                             </div>
                             <div class="form-group row">
-                                <label for="email-input">Email:</label>
-                                <input class="form-control" id="email-input" type="email">
+                                <label for="trainDestination-input">Destination:</label>
+                                <input class="form-control" id="trainDestination-input" type="text">
                             </div>
                             <div class="form-group row">
-                                <label for="age-input">Age:</label>
-                                <input class="form-control" id="age-input" type="number">
+                                <label for="firstTrainTime-input">Time of First Train:</label>
+                                <input class="form-control" id="firstTrainTime-input" type="number">
                             </div>
                             <div class="form-group row">
-                                <label for="comment-input">How did you hear about us?</label>
-                                <textarea class="form-control" id="comment-input" rows="5"></textarea>
+                                <label for="trainFrequency-input">Arrival Frequency:</label>
+                                <input class="form-control" id="trainFrequency-input" type="number"></textarea>
                             </div>
-                            <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+                            <button class="btn btn-default" id="add-user" type="submit">Submit this Choo-Choo</button>
                         </form>
 
                     </div>
@@ -91,19 +92,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Wells for displaying all users -->
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    All Members
-                </div>
-                <div class="card-body">
-                    <div id="full-member-list"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery.js"></script>
