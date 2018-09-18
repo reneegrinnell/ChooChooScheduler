@@ -30,11 +30,32 @@
 
         <div class="row">
 
-            <!-- Train info card-->
-            <div class="col-lg-6">
+            <!-- Wells for displaying all users -->
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        JFKLDSAJFDLSKAFJDSAKLFJDSAKFLJDSALFD
+                        <h5><strong>All Choo-Choos</strong></h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="trains">
+                            <thead>
+                                <th>Train Name</th>
+                                <th>Destination</th>
+                                <th>Frequency (min)</th>
+                                <th>Next Arrival</th>
+                                <th>Minutes Away</th>
+                            </thead>
+                            <tbody id="fullTrainList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Train info card-->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><strong>Add a Choo-Choo</strong></h5>
                     </div>
 
                     <div class="card-body">
@@ -42,135 +63,110 @@
                         <!-- Train data entry form-->
                         <form role="form">
                             <div class="form-group row">
-                                <label for="trainName-input">Train Name:</label>
+                                <label for="trainName-input">Train Name</label>
                                 <input class="form-control" id="trainName-input" type="text">
                             </div>
                             <div class="form-group row">
-                                <label for="trainDestination-input">Destination:</label>
+                                <label for="trainDestination-input">Destination</label>
                                 <input class="form-control" id="trainDestination-input" type="text">
                             </div>
                             <div class="form-group row">
-                                <label for="firstTrainTime-input">Time of First Train:</label>
-                                <input class="form-control" id="firstTrainTime-input" type="number">
+                                <label for="firstTrainTime-input">Time of First Train (HH:mm, military time)</label>
+                                <input class="form-control" id="firstTrainTime-input" type="text">
                             </div>
                             <div class="form-group row">
-                                <label for="trainFrequency-input">Arrival Frequency:</label>
-                                <input class="form-control" id="trainFrequency-input" type="number"></textarea>
+                                <label for="trainFrequency-input">Arrival Frequency (min)</label>
+                                <input class="form-control" id="trainFrequency-input" type="text"></textarea>
                             </div>
-                            <button class="btn btn-default" id="add-user" type="submit">Submit this Choo-Choo</button>
+                            <button class="btn btn-default" id="addTrain" type="submit">Submit this Choo-Choo</button>
                         </form>
 
                     </div>
                 </div>
             </div>
 
-            <!-- Most Recent Member Card -->
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        Most Recent Member
-                    </div>
-                    <div class="card-body" id="recent-member">
-                        <h2 id="name-display"></h2>
-                        <h4 id="email-display"></h4>
-                        <h4 id="age-display"></h4>
-                        <p id="comment-display"></p>
-                    </div>
-                </div>
+            <footer>&copy; Renée Grinnell 2018</footer>
 
-            </div>
-
-            <!-- Wells for displaying all users -->
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        All Members
-                    </div>
-                    <div class="card-body">
-                        <div id="full-member-list"></div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery.js"></script>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery.js"></script>
 
-    <script>
+        <script>
 
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyAruY3ZVHowNtJPL4tUm-V0ZJzhgLjSFYU",
-            authDomain: "choochooscheduler-e209a.firebaseapp.com",
-            databaseURL: "https://choochooscheduler-e209a.firebaseio.com",
-            projectId: "choochooscheduler-e209a",
-            storageBucket: "choochooscheduler-e209a.appspot.com",
-            messagingSenderId: "1070793801761"
-        };
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyAruY3ZVHowNtJPL4tUm-V0ZJzhgLjSFYU",
+                authDomain: "choochooscheduler-e209a.firebaseapp.com",
+                databaseURL: "https://choochooscheduler-e209a.firebaseio.com",
+                projectId: "choochooscheduler-e209a",
+                storageBucket: "choochooscheduler-e209a.appspot.com",
+                messagingSenderId: "1070793801761"
+            };
 
-        firebase.initializeApp(config);
+            firebase.initializeApp(config);
 
-        var dataRef = firebase.database();
+            var dataRef = firebase.database();
 
-        // Initial values
-        var trainName = "";
-        var trainDestination = "";
-        var firstTrainTime = 0;
-        var trainFrequency = 0;
+            // Initial values
+            var trainName = "";
+            var trainDestination = "";
+            var firstTrainTime = 0;
+            var trainFrequency = 0;
 
-        // Capture button click
-        $("#add-user").on("click", function (event) {
-            event.preventDefault();
+            // Capture button click
+            $("#add-user").on("click", function (event) {
+                event.preventDefault();
 
-            // Logic for storing/retrieving most recent train
-            trainName = $("#trainName-input").val().trim();
-            trainDestination = $("#trainDestination-input").val().trim();
-            firstTrainTime = $("#firstTrainTime-input").val().trim();
-            trainFrequency = $("#trainFrequency-input").val().trim();
+                // Logic for storing/retrieving most recent train
+                trainName = $("#trainName-input").val().trim();
+                trainDestination = $("#trainDestination-input").val().trim();
+                firstTrainTime = $("#firstTrainTime-input").val().trim();
+                trainFrequency = $("#trainFrequency-input").val().trim();
 
-            // Pushing info for most recent train to Firebase
-            dataRef.ref().push({
+                // Pushing info for most recent train to Firebase
+                dataRef.ref().push({
 
-                trainName: trainName,
-                trainDestination: trainDestination,
-                firstTrainTime: firstTrainTime,
-                trainFrequency: trainFrequency,
-                dateAdded: firebase.database.ServerValue.TIMESTAMP
+                    trainName: trainName,
+                    trainDestination: trainDestination,
+                    firstTrainTime: firstTrainTime,
+                    trainFrequency: trainFrequency,
+                    dateAdded: firebase.database.ServerValue.TIMESTAMP
+                });
             });
-        });
 
-        // Firebase watcher + initial loader
-        dataRef.ref().on("child_added", function (childSnapshot) {
+            // Firebase watcher + initial loader
+            dataRef.ref().on("child_added", function (childSnapshot) {
 
-            // Log everything that's coming out of snapshot
-            console.log(childSnapshot.val().trainName);
-            console.log(childSnapshot.val().trainDestination);
-            console.log(childSnapshot.val().firstTrainTime);
-            console.log(childSnapshot.val().trainFrequency);
-            console.log(childSnapshot.val().joinDate);
+                // Log everything that's coming out of snapshot
+                console.log(childSnapshot.val().trainName);
+                console.log(childSnapshot.val().trainDestination);
+                console.log(childSnapshot.val().firstTrainTime);
+                console.log(childSnapshot.val().trainFrequency);
+                console.log(childSnapshot.val().joinDate);
 
-            // Full list of items to the well
-            $("#fullTrainLst").append("<div class='well'><span class='nameOfTrain'> " +
-                childSnapshot.val().trainName +
-                " </span><span class='destinationOfTrain'> " + childSnapshot.val().trainDestination +
-                " </span><span class='timeOfFirstTrain'> " + childSnapshot.val().firstTrainTime +
-                " </span><span class='frequencyOfTrain'> " + childSnapshot.val().trainFrequency +
-                " </span></div>");
+                // Full list of items to the well
+                $("#fullTrainList").append("<div class='well'><span class='nameOfTrain'> " +
+                    childSnapshot.val().trainName +
+                    " </span><span class='destinationOfTrain'> " + childSnapshot.val().trainDestination +
+                    " </span><span class='timeOfFirstTrain'> " + childSnapshot.val().firstTrainTime +
+                    " </span><span class='frequencyOfTrain'> " + childSnapshot.val().trainFrequency +
+                    " </span></div>");
 
-            // Handle errors
-        }, function (errorObject) {
-            console.log("Errors handled: " + errorObject.code);
-        });
+                // Handle errors
+            }, function (errorObject) {
+                console.log("Errors handled: " + errorObject.code);
+            });
 
-        dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function (snapshot) {
-            // Change HTML to reflect
-            $("#nameOfTrain").text(snapshot.val().trainName);
-            $("#destinationOfTrain").text(snapshot.val().trainDestination);
-            $("#timeOfFirstTrain").text(snapshot.val().firstTrainTime);
-            $("#frequencyOfTrain").text(snapshot.val().trainFrequency);
-        });
+            dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function (snapshot) {
+                // Change HTML to reflect
+                $("#nameOfTrain").text(snapshot.val().trainName);
+                $("#destinationOfTrain").text(snapshot.val().trainDestination);
+                $("#timeOfFirstTrain").text(snapshot.val().firstTrainTime);
+                $("#frequencyOfTrain").text(snapshot.val().trainFrequency);
+            });
 
-    </script>
+        </script>
 </body>
 
 </html>
