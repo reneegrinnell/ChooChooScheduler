@@ -5,13 +5,25 @@
     background-color: #800000;
 }
 
+.btn-primary {
+    background-color: #800000;
+    border-color: #fff;
+    font-weight: bold;
+}
+
+.panel-heading {
+    background-color: #800000 !important;
+}
+
+.panel-title {
+    color: #fff;
+}
+
 div.panel-body {
     background-image: url('../images/redTrain.jpg');
     color: #fff;
 }
 
-.btn-primary {
-    background-color: #800000;
-    border-color: #fff;
-    font-weight: bold;
+#footer {
+    text-align: center;
 }
